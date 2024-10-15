@@ -1,13 +1,15 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, View } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { Profile } from '@/components/ProfileSection';
+import ProfileSection  from '@/components/ProfileSection/index';
 
 export default function HomeScreen() {
   return (
-      <Profile/>
+    <View>
+      <ProfileSection/>
+    </View>
   );
 }
