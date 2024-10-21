@@ -3,39 +3,40 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   Linking,
+  Image,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons"; // Para os ícones
 
+const detailsimg = require("../../assets/images/detailsimg.png");
+
 export default function EventDetailsScreen() {
   const handleWhatsAppPress = () => {
-    // URL para compartilhar via WhatsApp
     Linking.openURL(
       "https://wa.me/?text=Venha participar do III Torneio de Damas em São Luís!"
     );
   };
 
+  const handleGoBack = () => {
+    // Função para voltar à tela anterior
+    console.log("Voltar para a tela anterior");
+  };
+
   return (
     <View style={styles.container}>
-      {/* Imagem do evento */}
-      <Image
-        source={{ uri: "https://via.placeholder.com/400x200" }}
-        style={styles.eventImage}
-      />
+      {/* Botão de Retornar */}
+      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+        <Ionicons name="arrow-back-outline" size={24} color="black" />
+      </TouchableOpacity>
 
-      {/* Detalhes do evento */}
+      <Image source={detailsimg} style={styles.eventImage} />
       <View style={styles.detailsContainer}>
         <Text style={styles.eventTitle}>III Torneio de Damas</Text>
-
-        {/* Data */}
         <View style={styles.infoRow}>
           <Ionicons name="calendar-outline" size={20} color="gray" />
           <Text style={styles.infoText}>20 de novembro - 21:00</Text>
         </View>
-
-        {/* Local */}
         <View style={styles.infoRow}>
           <Ionicons name="location-outline" size={20} color="gray" />
           <View>
@@ -45,21 +46,15 @@ export default function EventDetailsScreen() {
             </Text>
           </View>
         </View>
-
-        {/* Valor */}
         <View style={styles.infoRow}>
           <MaterialIcons name="attach-money" size={20} color="gray" />
           <Text style={styles.infoText}>Participe por R$ 60,00</Text>
         </View>
-
-        {/* Descrição */}
         <Text style={styles.description}>
           Venha participar do Torneio de Damas em São Luís! Um evento imperdível
           para jogadores que desejam testar suas habilidades e competir em alto
           nível. Inscreva-se agora pelo WhatsApp e garanta sua vaga!
         </Text>
-
-        {/* Botão WhatsApp */}
         <TouchableOpacity
           style={styles.whatsAppButton}
           onPress={handleWhatsAppPress}
@@ -76,6 +71,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+  },
+  backButton: {
+    position: "absolute",
+    top: 50, // Ajuste conforme necessário para alinhar o botão no topo
+    left: 20,
+    zIndex: 1,
   },
   eventImage: {
     width: "100%",
