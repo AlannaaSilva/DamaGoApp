@@ -1,12 +1,19 @@
 import EvilIcons from '@expo/vector-icons/EvilIcons';
+import { Link } from 'expo-router';
 import { Image, Pressable, Text, View, StyleSheet} from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export function Profile(){
   return(
     <SafeAreaView>
       <View>
-        <Text>Perfil</Text>
+        <Link href={'/'}>
+          <View style={styles.linkContainer}>
+            <Ionicons name="arrow-back-circle-outline" size={24} color="black" />
+            <Text style={styles.linkText}>Perfil</Text>
+          </View>
+        </Link>
         <View style={styles.container}>
           <View style={styles.profileContainer}>
             <Image source={require("../../../assets/images/Avatar.png")}/>
@@ -41,5 +48,16 @@ const styles = StyleSheet.create({
     width: 'auto',
     alignItems: 'center',
     justifyContent:'center'
+  },
+  linkContainer:{
+    display:'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    paddingLeft: 16
+  },
+  linkText:{
+    fontWeight:'700',
+    fontSize: 20
   }
 });

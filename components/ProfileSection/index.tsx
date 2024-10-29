@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: '400',
+    fontWeight: '500',
     marginBottom: 16,
+    marginLeft: 16
   },
 });
