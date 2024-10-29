@@ -41,6 +41,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="community"
+        options={{
+          title: 'Comunidade',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'list-outline' : 'list-outline'} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
