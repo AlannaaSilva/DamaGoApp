@@ -1,12 +1,7 @@
 import "react-native-gesture-handler";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import Register from "./(tabs)/Register";
-import EventDetailsScreen from "./(tabs)/EventDetailsScreen";
-import HomeScreen from "./(tabs)/index";
-import HomeUserScreen from "./(tabs)/HomeUserScreen";
-
+import { Stack } from "expo-router";
 // Definindo o tipo para os parâmetros do stack
 export type RootStackParamList = {
   Home: undefined; // Nenhum parâmetro
@@ -15,17 +10,14 @@ export type RootStackParamList = {
   EventDetails: undefined; // Exemplo de parâmetro
 };
 
-const Stack = createStackNavigator<RootStackParamList>(); // Aplicando o tipo ao Stack
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="HomeUser" component={HomeUserScreen} />
-        <Stack.Screen name="Cadastro" component={Register} />
-        <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
-      </Stack.Navigator>
+        <Stack.Screen name="Home" />
+        <Stack.Screen name="HomeUser" />
+        <Stack.Screen name="Register" />
+        <Stack.Screen name="EventDetails"/>
     </NavigationContainer>
   );
 }

@@ -7,78 +7,78 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons"; // Para os ícones
 import { useNavigation } from "@react-navigation/native"; // Importe o hook de navegação
+import { Link } from "expo-router";
 
 export default function HomeUserScreen() {
   const navigation = useNavigation(); // Inicialize a navegação
   return (
+    
     <ScrollView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.welcomeText}>Bem-vindo!</Text>
-        <Ionicons name="notifications-outline" size={24} color="black" />
-      </View>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.welcomeText}>Bem-vindo!</Text>
+          <Ionicons name="notifications-outline" size={24} color="black" />
+        </View>
 
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <Ionicons
-          name="search"
-          size={20}
-          color="gray"
-          style={styles.searchIcon}
-        />
-        <TextInput style={styles.searchInput} placeholder="Buscar evento" />
-        <MaterialIcons name="settings" size={24} color="black" />
-      </View>
+        {/* Search Bar */}
+        <View style={styles.searchContainer}>
+          <Ionicons
+            name="search"
+            size={20}
+            color="gray"
+            style={styles.searchIcon}
+          />
+          <TextInput style={styles.searchInput} placeholder="Buscar evento" />
+          <MaterialIcons name="settings" size={24} color="black" />
+        </View>
 
-      {/* Location Buttons */}
-      <View style={styles.locationContainer}>
-        <TouchableOpacity style={styles.locationButton}>
-          <Text>Alcântara</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.locationButton, styles.selectedLocation]}
-        >
-          <Text>São Luís</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.locationButton}>
-          <Text>Rosário</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.locationButton}>
-          <Text>Bacabeira</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Upcoming Events */}
-      <View style={styles.eventsContainer}>
-        <Text style={styles.sectionTitle}>Próximos eventos</Text>
-        <TouchableOpacity>
-          <Text style={styles.viewAllText}>Ver todos</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Event Card */}
-      <View style={styles.eventCard}>
-        <Image
-          source={{
-            uri: "https://plus.unsplash.com/premium_photo-1720612507835-afccac9dfe7a?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          }}
-          style={styles.eventImage}
-        />
-        <View style={styles.eventDetails}>
-          <Text style={styles.eventTitle}>III Torneio de Damas</Text>
-          <Text style={styles.eventLocation}>Local: UNDB - São Luís</Text>
+        {/* Location Buttons */}
+        <View style={styles.locationContainer}>
+          <TouchableOpacity style={styles.locationButton}>
+            <Text>Alcântara</Text>
+          </TouchableOpacity>
           <TouchableOpacity
-            style={styles.subscribeButton}
-            onPress={() => navigation.navigate("EventDetails" as never)}
+            style={[styles.locationButton, styles.selectedLocation]}
           >
-            <Text style={styles.subscribeButtonText}>Inscreva-se</Text>
+            <Text>São Luís</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.locationButton}>
+            <Text>Rosário</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.locationButton}>
+            <Text>Bacabeira</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </ScrollView>
+
+        {/* Upcoming Events */}
+        <View style={styles.eventsContainer}>
+          <Text style={styles.sectionTitle}>Próximos eventos</Text>
+          <TouchableOpacity>
+            <Text style={styles.viewAllText}>Ver todos</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Event Card */}
+        <View style={styles.eventCard}>
+          <Image
+            source={{
+              uri: "https://plus.unsplash.com/premium_photo-1720612507835-afccac9dfe7a?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            }}
+            style={styles.eventImage}
+          />
+          <View style={styles.eventDetails}>
+            <Text style={styles.eventTitle}>III Torneio de Damas</Text>
+            <Text style={styles.eventLocation}>Local: UNDB - São Luís</Text>
+            <Link href={'/(stack)/EventDetailsScreen'} style={styles.subscribeButton} >
+                <Text style={styles.subscribeButtonText}>Inscreva-se</Text>
+            </Link>
+          </View>
+        </View>
+      </ScrollView>
   );
 }
 
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
+    textAlign:'center'
   },
   subscribeButtonText: {
     color: "#fff",
