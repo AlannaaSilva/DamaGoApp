@@ -11,7 +11,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: '#000',
         headerShown: false,
       }}>
       <Tabs.Screen
@@ -44,6 +44,15 @@ export default function TabLayout() {
           title: 'Perfil',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'person-outline' : 'person-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="community"
+        options={{
+          title: 'Comunidade',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'list-outline' : 'list-outline'} color={color} />
           ),
         }}
       />
