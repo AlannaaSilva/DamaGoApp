@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "470435370841",
+    "project_id": "bytebuilders-3337c",
+    "storage_bucket": "bytebuilders-3337c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470435370841:android:00889a52b1bec78572de48",
+        "android_client_info": {
+          "package_name": "com.bytebuilders.damago"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ9cBV07XmfOWbnv-0fwzFL0Ujwl3ZXIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
