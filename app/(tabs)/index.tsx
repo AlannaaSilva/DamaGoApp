@@ -7,9 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type RootStackParamList = {
-  Cadastro: undefined;
+  Cadastro: any;
   HomeUser: undefined;
   Home: undefined;
+  index:any;
+  HomeUserScreen: any;
+  Register: any;
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
@@ -35,8 +38,8 @@ export default function HomeScreen() {
         }
       >
         <ThemedView style={styles.buttonContainer}>
-          <Button title="Fazer cadastro" onPress={() => handleButtonPress('Cadastro')} />
-          <Button title="Continuar sem cadastro" onPress={() => handleButtonPress('HomeUser')} />
+          <Button title="Fazer cadastro" onPress={() => navigation.navigate('Register', {screen: 'Register'})} />
+          <Button title="Continuar sem cadastro" onPress={() => navigation.navigate('HomeUserScreen', {screen: 'HomeUserScreen'})} />
         </ThemedView>
       </ParallaxScrollView>
     </>

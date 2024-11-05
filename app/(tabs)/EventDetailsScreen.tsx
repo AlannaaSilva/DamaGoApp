@@ -8,25 +8,29 @@ import {
   Image,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons"; // Para os ícones
+import { useNavigation } from "expo-router";
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  HomeUserScreen:any;
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const detailsimg = require("../../assets/images/detailsimg.png");
 
 export default function EventDetailsScreen() {
+  const navigation = useNavigation<NavigationProp>(); // Inicialize a navegação
   const handleWhatsAppPress = () => {
     Linking.openURL(
       "https://wa.me/?text=Venha participar do III Torneio de Damas em São Luís!"
     );
   };
 
-  const handleGoBack = () => {
-    // Função para voltar à tela anterior
-    console.log("Voltar para a tela anterior");
-  };
-
   return (
     <View style={styles.container}>
       {/* Botão de Retornar */}
-      <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('HomeUserScreen', {screen: 'HomeUserScreen'})}>
         <Ionicons name="arrow-back-outline" size={24} color="black" />
       </TouchableOpacity>
 

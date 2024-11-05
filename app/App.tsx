@@ -4,8 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./(tabs)/index";
 import HomeUserScreen from "./(tabs)/HomeUserScreen";
-import Register from "./(stack)/Register";
-import EventDetailsScreen from "./(stack)/EventDetailsScreen";
+import Register from "./(tabs)/Register";
+import EventDetailsScreen from "./(tabs)/EventDetailsScreen";
 
 // Definindo o tipo para os parâmetros do stack
 export type RootStackParamList = {

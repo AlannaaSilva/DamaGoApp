@@ -7,6 +7,19 @@ import {
   StyleSheet,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "expo-router";
+import { StackNavigationProp } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  Cadastro: any;
+  HomeUser: undefined;
+  Home: undefined;
+  index:any;
+  HomeUserScreen: any;
+  Register: any;
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 const Register: React.FC = () => {
   const [name, setName] = useState("");
@@ -22,9 +35,13 @@ const Register: React.FC = () => {
     console.log("Password:", password);
   };
 
+
+  const navigation = useNavigation<NavigationProp>();
+
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('index', {screen: 'Home'})}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
 

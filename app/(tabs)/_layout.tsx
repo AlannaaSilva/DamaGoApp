@@ -47,6 +47,24 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="Register"
+        options={{
+          title: 'registro',
+          tabBarIcon: () => null, 
+          tabBarButton: () => null,
+          tabBarStyle: { display: 'none' } 
+        }}
+      />
+      <Tabs.Screen
+        name="EventDetailsScreen"
+        options={{
+          title: 'event',
+          tabBarIcon: () => null, 
+          tabBarButton: () => null,
+          tabBarStyle: { display: 'none' } 
+        }}
+      />
     </Tabs>
   );
 }
