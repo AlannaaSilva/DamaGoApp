@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
@@ -14,9 +15,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 type RootStackParamList = {
   Cadastro: any;
-  HomeUser: undefined;
+  HomeUser: any;
   Home: undefined;
-  index:any;
+  index: any;
   HomeUserScreen: any;
   Register: any;
 };
@@ -28,18 +29,20 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const auth = FIREBASE_AUTH;
-
-  const signIn = async () =>{
-    try{
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response)
-    }catch(err){
-      console.log(err)
-    }
-  }
-
   const navigation = useNavigation<NavigationProp>();
 
+  // Função para realizar o login
+  const signIn = async () => {
+    try {
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      console.log("Login bem-sucedido:", response);
+      
+      navigation.navigate('HomeUserScreen', {screen: 'HomeUserScreen'}); 
+    } catch (err: any) {
+      console.error("Erro de login:", err.message);
+      Alert.alert("Erro", err.message); 
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -74,7 +77,7 @@ const Login: React.FC = () => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="Senha"
           value={password}
           onChangeText={setPassword}
           secureTextEntry={!showPassword}
@@ -92,13 +95,13 @@ const Login: React.FC = () => {
       </View>
 
       <View style={styles.registerOption}>
-          <Text>Não possui conta?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register', {screen: 'Register'})}>
-            <Text style={styles.registerText}>Cadastre-se</Text>
-          </TouchableOpacity>
+        <Text>Não possui conta?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+          <Text style={styles.registerText}>Cadastre-se</Text>
+        </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={()=> signIn()}>
+      <TouchableOpacity style={styles.button} onPress={() => signIn()}>
         <Text style={styles.buttonText}>Fazer login</Text>
       </TouchableOpacity>
     </View>
@@ -151,15 +154,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  registerOption:{
-    display:'flex',
-    flexDirection:'row',
-    gap:3,
-    alignSelf:'flex-end',
-    padding:10
+  registerOption: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 3,
+    alignSelf: 'flex-end',
+    padding: 10
   },
-  registerText:{
-    fontWeight:'600'
+  registerText: {
+    fontWeight: '600'
   }
 });
 

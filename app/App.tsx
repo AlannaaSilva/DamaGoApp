@@ -6,7 +6,6 @@ import HomeScreen from "./(tabs)/index";
 import HomeUserScreen from "./(tabs)/HomeUserScreen";
 import Register from "./(tabs)/Register";
 import EventDetailsScreen from "./(tabs)/EventDetailsScreen";
-
 // Definindo o tipo para os parâmetros do stack
 export type RootStackParamList = {
   Home: undefined; // Nenhum parâmetro

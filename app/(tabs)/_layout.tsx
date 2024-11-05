@@ -4,10 +4,18 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { FIREBASE_AUTH } from '@/FirebaseConfig';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const  [user, setUser] = React.useState<User | null>(null);
 
+  React.useEffect(()=>{
+    onAuthStateChanged(FIREBASE_AUTH, (user=>{
+      console.log('user',user)
+      setUser(user)
+    }))
+  },[])
   return (
     <Tabs
       screenOptions={{
@@ -29,7 +37,9 @@ export default function TabLayout() {
           title: 'Search',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'search' : 'search-outline'} color={color} />)}}/>
-      <Tabs.Screen
+
+      {user?
+        <Tabs.Screen
         name="profile"
         options={{
           title: 'Perfil',
@@ -37,7 +47,18 @@ export default function TabLayout() {
             <TabBarIcon name={focused ? 'person-outline' : 'person-outline'} color={color} />
           ),
         }}
-      />
+      /> :
+      <Tabs.Screen
+      name="profile"
+      options={{
+        title: 'Perfil',
+        tabBarIcon: () => null, 
+        tabBarButton: () => null,
+        tabBarStyle: { display: 'none' } 
+      }}
+    />
+      } 
+      
       <Tabs.Screen
         name="community"
         options={{

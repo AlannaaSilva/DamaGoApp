@@ -5,6 +5,8 @@ import { ThemedView } from '@/components/ThemedView';
 import Button from '@/components/Button';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { FIREBASE_AUTH } from '@/FirebaseConfig';
 
 type RootStackParamList = {
   Cadastro: any;
@@ -19,6 +21,14 @@ type RootStackParamList = {
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
 export default function HomeScreen() {
+  const  [user, setUser] = React.useState<User | null>(null);
+
+  React.useEffect(()=>{
+    onAuthStateChanged(FIREBASE_AUTH, (user=>{
+      console.log('user',user)
+      setUser(user)
+    }))
+  },[])
   const navigation = useNavigation<NavigationProp>();
 
   const handleButtonPress = (screen: keyof RootStackParamList) => {
@@ -39,8 +49,14 @@ export default function HomeScreen() {
         }
       >
         <ThemedView style={styles.buttonContainer}>
-          <Button title="Fazer login" onPress={() => navigation.navigate('Login', {screen: 'Login'})} />
-          <Button title="Continuar sem login" onPress={() => navigation.navigate('HomeUserScreen', {screen: 'HomeUserScreen'})} />
+          {user? 
+          <Button title="Fazer Logout" onPress={()=> FIREBASE_AUTH.signOut()} />:
+          <>
+          <Button title="Fazer login" onPress={() => navigation.navigate('Login', { screen: 'Login' })} />
+          <Button title="Continuar sem login" onPress={() => navigation.navigate('HomeUserScreen', { screen: 'HomeUserScreen' })}/>
+          </>
+           }
+          
         </ThemedView>
       </ParallaxScrollView>
     </>
