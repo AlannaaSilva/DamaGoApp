@@ -9,8 +9,8 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FIREBASE_AUTH } from "@/FirebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 type RootStackParamList = {
   Cadastro: any;
@@ -19,22 +19,19 @@ type RootStackParamList = {
   index:any;
   HomeUserScreen: any;
   Register: any;
-  Login: any;
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
 
-const Register: React.FC = () => {
-  const [name, setName] = useState("");
+const Login: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const auth = FIREBASE_AUTH;
 
-  const signUp = async () =>{
+  const signIn = async () =>{
     try{
-      const response = await createUserWithEmailAndPassword(auth, email, password);
+      const response = await signInWithEmailAndPassword(auth, email, password);
       console.log(response)
     }catch(err){
       console.log(err)
@@ -46,26 +43,11 @@ const Register: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Login', {screen: 'Login'})}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('index', {screen: 'Home'})}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
 
-      <Text style={styles.title}>Faça seu cadastro</Text>
-
-      <View style={styles.inputContainer}>
-        <Ionicons
-          name="person-outline"
-          size={20}
-          color="gray"
-          style={styles.icon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          value={name}
-          onChangeText={setName}
-        />
-      </View>
+      <Text style={styles.title}>Faça seu login</Text>
 
       <View style={styles.inputContainer}>
         <Ionicons
@@ -80,22 +62,6 @@ const Register: React.FC = () => {
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Ionicons
-          name="call-outline"
-          size={20}
-          color="gray"
-          style={styles.icon}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Phone number"
-          value={phone}
-          onChangeText={setPhone}
-          keyboardType="phone-pad"
         />
       </View>
 
@@ -125,8 +91,15 @@ const Register: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={()=> signUp()}>
-        <Text style={styles.buttonText}>Criar conta</Text>
+      <View style={styles.registerOption}>
+          <Text>Não possui conta?</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register', {screen: 'Register'})}>
+            <Text style={styles.registerText}>Cadastre-se</Text>
+          </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={()=> signIn()}>
+        <Text style={styles.buttonText}>Fazer login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -178,6 +151,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  registerOption:{
+    display:'flex',
+    flexDirection:'row',
+    gap:3,
+    alignSelf:'flex-end',
+    padding:10
+  },
+  registerText:{
+    fontWeight:'600'
+  }
 });
 
-export default Register;
+export default Login;

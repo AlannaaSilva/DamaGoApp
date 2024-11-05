@@ -13,6 +13,7 @@ type RootStackParamList = {
   index:any;
   HomeUserScreen: any;
   Register: any;
+  Login: any;
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList>;
@@ -38,8 +39,8 @@ export default function HomeScreen() {
         }
       >
         <ThemedView style={styles.buttonContainer}>
-          <Button title="Fazer cadastro" onPress={() => navigation.navigate('Register', {screen: 'Register'})} />
-          <Button title="Continuar sem cadastro" onPress={() => navigation.navigate('HomeUserScreen', {screen: 'HomeUserScreen'})} />
+          <Button title="Fazer login" onPress={() => navigation.navigate('Login', {screen: 'Login'})} />
+          <Button title="Continuar sem login" onPress={() => navigation.navigate('HomeUserScreen', {screen: 'HomeUserScreen'})} />
         </ThemedView>
       </ParallaxScrollView>
     </>

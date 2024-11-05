@@ -65,6 +65,15 @@ export default function TabLayout() {
           tabBarStyle: { display: 'none' } 
         }}
       />
+      <Tabs.Screen
+        name="Login"
+        options={{
+          title: 'login',
+          tabBarIcon: () => null, 
+          tabBarButton: () => null,
+          tabBarStyle: { display: 'none' } 
+        }}
+      />
     </Tabs>
   );
 }
