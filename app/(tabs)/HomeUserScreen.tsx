@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,27 +8,62 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons"; // Para os ícones
-import { useNavigation } from "@react-navigation/native"; // Importe o hook de navegação
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native"; 
 import { StackNavigationProp } from '@react-navigation/stack';
+import { FIREBASE_STORE } from "@/FirebaseConfig";
+import { collection, getDocs, query } from "firebase/firestore";
+
+interface Event {
+  id: string;
+  nome: string;
+  local: string;
+  descricao: string;
+  valor: number;
+}
 
 type RootStackParamList = {
-  EventDetailsScreen:any;
+  EventDetailsScreen: { id: string };
 };
 
-type NavigationProp = StackNavigationProp<RootStackParamList>;
+type NavigationProp = StackNavigationProp<RootStackParamList, 'EventDetailsScreen'>;
+
+const ref = collection(FIREBASE_STORE, "events");
 
 export default function HomeUserScreen() {
-  const navigation = useNavigation<NavigationProp>(); // Inicialize a navegação
+  const [data, setData] = useState<Event[]>([]);
+  const navigation = useNavigation<NavigationProp>();
+
+  const fetchData = async () => {
+    try {
+      const eventsCollectionRef = ref;
+        
+      const eventsQuery = query(eventsCollectionRef);
+        
+      const querySnapshot = await getDocs(eventsQuery);
+        
+      const eventsData: Event[] = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Event[];
+
+      setData(eventsData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
   return (
     <ScrollView style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.welcomeText}>Bem-vindo!</Text>
         <Ionicons name="notifications-outline" size={24} color="black" />
       </View>
 
-      {/* Search Bar */}
       <View style={styles.searchContainer}>
         <Ionicons
           name="search"
@@ -40,7 +75,6 @@ export default function HomeUserScreen() {
         <MaterialIcons name="settings" size={24} color="black" />
       </View>
 
-      {/* Location Buttons */}
       <View style={styles.locationContainer}>
         <TouchableOpacity style={styles.locationButton}>
           <Text>Alcântara</Text>
@@ -58,7 +92,6 @@ export default function HomeUserScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Upcoming Events */}
       <View style={styles.eventsContainer}>
         <Text style={styles.sectionTitle}>Próximos eventos</Text>
         <TouchableOpacity>
@@ -66,25 +99,28 @@ export default function HomeUserScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Event Card */}
-      <View style={styles.eventCard}>
-        <Image
-          source={{
-            uri: "https://plus.unsplash.com/premium_photo-1720612507835-afccac9dfe7a?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          }}
-          style={styles.eventImage}
-        />
-        <View style={styles.eventDetails}>
-          <Text style={styles.eventTitle}>III Torneio de Damas</Text>
-          <Text style={styles.eventLocation}>Local: UNDB - São Luís</Text>
-          <TouchableOpacity
-            style={styles.subscribeButton}
-            onPress={() => navigation.navigate('EventDetailsScreen', {screen: 'EventDetailsScreen'})}
-          >
-            <Text style={styles.subscribeButtonText}>Inscreva-se</Text>
-          </TouchableOpacity>
+      {data.map((e) => (
+        <View key={e.id} style={styles.eventCard}>
+          <Image
+            source={{
+              uri: "https://plus.unsplash.com/premium_photo-1720612507835-afccac9dfe7a?q=80&w=2969&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+            }}
+            style={styles.eventImage}
+          />
+          <View style={styles.eventDetails}>
+            <Text style={styles.eventTitle}>{e.nome}</Text>
+            <Text style={styles.eventLocation}>Local: {e.local}</Text>
+            <TouchableOpacity
+              style={styles.subscribeButton}
+              onPress={() =>
+                navigation.navigate("EventDetailsScreen", { id: e.id })
+              }
+            >
+              <Text style={styles.subscribeButtonText}>Inscreva-se</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      ))}
     </ScrollView>
   );
 }
@@ -94,17 +130,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 16,
-    paddingTop: 40, // Ajusta o padding superior para caber o header
+    paddingTop: 40,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center", // Alinha o conteúdo à esquerda
+    alignItems: "center",
     marginBottom: 20,
-  },
-  logo: {
-    width: 40,
-    height: 40,
   },
   welcomeText: {
     fontSize: 18,

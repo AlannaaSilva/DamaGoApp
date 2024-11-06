@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,19 +8,72 @@ import {
   Image,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons"; // Para os ícones
-import { useNavigation } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useRoute } from "@react-navigation/native";
+import { FIREBASE_STORE } from "@/FirebaseConfig";
+import { collection, getDocs, query } from "firebase/firestore";
+
+interface Event {
+  id: string;
+  nome: string;
+  dataHora: string;
+  local: string;
+  descricao: string;
+  valor: number;
+}
 
 type RootStackParamList = {
-  HomeUserScreen:any;
+  HomeUserScreen: undefined;
+  EventDetailsScreen: { id: string };
 };
 
-type NavigationProp = StackNavigationProp<RootStackParamList>;
+type RouteParams = {
+  id: string;
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, 'EventDetailsScreen'>;
 
 const detailsimg = require("../../assets/images/detailsimg.png");
 
+const ref = collection(FIREBASE_STORE, "events");
+
 export default function EventDetailsScreen() {
-  const navigation = useNavigation<NavigationProp>(); // Inicialize a navegação
+  const navigation = useNavigation<NavigationProp>();
+  const route = useRoute();
+  const [data, setData] = useState<Event[]>([]); 
+
+  const fetchData = async () => {
+    try {
+      const eventsCollectionRef = ref;
+
+      const eventsQuery = query(eventsCollectionRef);
+
+      const querySnapshot = await getDocs(eventsQuery);
+
+      const eventsData: Event[] = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Event[];
+
+      setData(eventsData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const { id } = route.params as RouteParams;
+
+  const dataId = data.find((e) => e.id === id);
+
+  if (!dataId) {
+    return <Text>Evento não encontrado</Text>;
+  }
+
   const handleWhatsAppPress = () => {
     Linking.openURL(
       "https://wa.me/?text=Venha participar do III Torneio de Damas em São Luís!"
@@ -29,36 +82,33 @@ export default function EventDetailsScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Botão de Retornar */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('HomeUserScreen', {screen: 'HomeUserScreen'})}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate('HomeUserScreen')}
+      >
         <Ionicons name="arrow-back-outline" size={24} color="black" />
       </TouchableOpacity>
 
       <Image source={detailsimg} style={styles.eventImage} />
       <View style={styles.detailsContainer}>
-        <Text style={styles.eventTitle}>III Torneio de Damas</Text>
+        <Text style={styles.eventTitle}>{dataId.nome}</Text>
         <View style={styles.infoRow}>
           <Ionicons name="calendar-outline" size={20} color="gray" />
-          <Text style={styles.infoText}>20 de novembro - 21:00</Text>
+          <Text style={styles.infoText}>{dataId.dataHora}</Text>
         </View>
         <View style={styles.infoRow}>
           <Ionicons name="location-outline" size={20} color="gray" />
           <View>
-            <Text style={styles.infoText}>Undb - São Luís</Text>
+            <Text style={styles.infoText}>{dataId.local}</Text>
             <Text style={styles.addressText}>
-              Av. Coronel Colares Moreira, 443A - Jardim Renascença
             </Text>
           </View>
         </View>
         <View style={styles.infoRow}>
           <MaterialIcons name="attach-money" size={20} color="gray" />
-          <Text style={styles.infoText}>Participe por R$ 60,00</Text>
+          <Text style={styles.infoText}>Participe por R$ {dataId.valor},00</Text>
         </View>
-        <Text style={styles.description}>
-          Venha participar do Torneio de Damas em São Luís! Um evento imperdível
-          para jogadores que desejam testar suas habilidades e competir em alto
-          nível. Inscreva-se agora pelo WhatsApp e garanta sua vaga!
-        </Text>
+        <Text style={styles.description}>{dataId.descricao}</Text>
         <TouchableOpacity
           style={styles.whatsAppButton}
           onPress={handleWhatsAppPress}
@@ -78,7 +128,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 50, // Ajuste conforme necessário para alinhar o botão no topo
+    top: 50,
     left: 20,
     zIndex: 1,
   },

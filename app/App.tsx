@@ -23,7 +23,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="HomeUser" component={HomeUserScreen} />
         <Stack.Screen name="Cadastro" component={Register} />
-        <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
+        <Stack.Screen name="EventDetails" component={EventDetailsScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
